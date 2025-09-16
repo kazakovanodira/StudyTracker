@@ -1,7 +1,14 @@
+using StudyTracker.Interfaces;
+using StudyTracker.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IStudyLogRepository, StudyLogRepository>();
+builder.Services.AddScoped<IAudioOwnerRepository, AudioOwnerRepository>();
+builder.Services.AddScoped<IAudioMessageRepository, AudioMessageRepository>();
+
 
 var app = builder.Build();
 
