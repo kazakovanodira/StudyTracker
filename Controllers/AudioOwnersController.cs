@@ -18,10 +18,10 @@ public class AudioOwnersController : ControllerBase
         if (string.IsNullOrWhiteSpace(owner.OwnerName))
             return BadRequest("Owner name is required");
 
-        owner.OwnerId = Guid.NewGuid();
+        owner.AudioOwnerId = Guid.NewGuid();
 
         var created = await _repo.AddAsync(owner);
-        return CreatedAtAction(nameof(GetAll), new { id = created.OwnerId }, created);
+        return CreatedAtAction(nameof(GetAll), new { id = created.AudioOwnerId }, created);
     }
 
     [HttpGet]

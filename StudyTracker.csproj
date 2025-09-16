@@ -7,7 +7,38 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.6" />
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.4" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.4" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\Audios\Dad_Exceptional.mp3" />
+      <None Include="wwwroot\Audios\Dad_Good.mp3" />
+      <None Include="wwwroot\Audios\Dad_Little.mp3" />
+      <None Include="wwwroot\Audios\Khusha_Exceptional.mp3" />
+      <None Include="wwwroot\Audios\Khusha_Good.mp3" />
+      <None Include="wwwroot\Audios\Khusha_Little.mp3" />
+      <None Include="wwwroot\Audios\Mom_Exceptional.mp3" />
+      <None Include="wwwroot\Audios\Mom_Good.mp3" />
+      <None Include="wwwroot\Audios\Mom_Little.mp3" />
+      <None Include="wwwroot\Audios\Yu_Exceptional.mp3" />
+      <None Include="wwwroot\Audios\Yu_Good.mp3" />
+      <None Include="wwwroot\Audios\Yu_Little.mp3" />
     </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@ namespace StudyTracker.Models;
 
 public class AudioMessage
 {
-    public Guid AudioId { get; set; }
+    public Guid AudioMessageId { get; set; }
     public string FilePath { get; set; } = "";
     public Category Category { get; set; }
 
