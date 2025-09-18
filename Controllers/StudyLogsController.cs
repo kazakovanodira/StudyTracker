@@ -20,11 +20,10 @@ public class StudyLogsController : ControllerBase
             return BadRequest("Invalid study log");
         }
         
-        log.Id = Guid.NewGuid();
         log.Date = log.Date == default ? DateTime.UtcNow : log.Date;
 
         var created = await _repo.AddAsync(log);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        return CreatedAtAction(nameof(GetById), new { id = created.StudyLogId }, created);
     }
 
     [HttpGet]
