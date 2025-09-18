@@ -1,4 +1,4 @@
-namespace StudyTracker.Models;
+namespace StudyTracker.Models.EFModels;
 
 public class AudioMessage
 {

@@ -1,4 +1,4 @@
-using StudyTracker.Models;
+using StudyTracker.Models.EFModels;
 
 namespace StudyTracker.Interfaces;
 

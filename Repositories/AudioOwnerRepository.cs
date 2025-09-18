@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudyTracker.Context;
 using StudyTracker.Interfaces;
-using StudyTracker.Models;
+using StudyTracker.Models.EFModels;
 
 namespace StudyTracker.Repositories;
 

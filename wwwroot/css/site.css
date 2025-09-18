@@ -1,31 +1,107 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.card {
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  width: 380px;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+p.subtitle {
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-align: left;
+}
+
+input {
+  margin-top: 0.5rem;
+  padding: 0.6rem;
+  width: 100%;
+  border-radius: 0.7rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+input:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+}
+
+button {
+  margin-top: 1.5rem;
+  padding: 0.9rem;
+  width: 100%;
+  border: none;
+  border-radius: 0.7rem;
+  font-size: 1.05rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff7eb3, #ff5277);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.result {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.progress-container {
+  margin-top: 1rem;
+  background: rgba(255,255,255,0.2);
+  border-radius: 1rem;
+  overflow: hidden;
+  height: 12px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #43e97b, #38f9d7);
+  transition: width 0.8s ease;
+}
+
+audio {
+  margin-top: 1rem;
+  width: 100%;
+  border-radius: 0.7rem;
 }

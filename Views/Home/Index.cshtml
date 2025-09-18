@@ -7,38 +7,13 @@ ViewData["Title"] = "Study Tracker";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study Tracker</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #667eea, #764ba2);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-      width: 350px;
-      text-align: center;
-    }
-    h1 { font-size: 1.8rem; margin-bottom: 1rem; }
-    label { display: block; margin-top: 1rem; font-size: 1rem; }
-    input { margin-top: 0.5rem; padding: 0.5rem; width: 100%; border-radius: 0.5rem; border: none; }
-    button { margin-top: 1.5rem; padding: 0.75rem; width: 100%; border: none; border-radius: 0.5rem; font-size: 1rem; background: #ff7eb3; color: #fff; cursor: pointer; transition: 0.3s; }
-    button:hover { background: #ff5277; }
-    .result { margin-top: 1.5rem; font-size: 1.2rem; font-weight: bold; }
-    audio { margin-top: 1rem; width: 100%; }
-  </style>
+  <title>@ViewData["Title"]</title>
+  <link rel="stylesheet" href="~/css/studytracker.css" />
 </head>
 <body>
 <div class="card">
   <h1>📚 Study Tracker</h1>
+  <p class="subtitle">Track your study sessions & stay motivated!</p>
 
   <label for="start">Start Time</label>
   <input type="time" id="start">
@@ -49,6 +24,9 @@ ViewData["Title"] = "Study Tracker";
   <button onclick="submitStudy()">Submit</button>
 
   <div class="result" id="result"></div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
   <audio id="audioPlayer" controls></audio>
 </div>
 
@@ -58,20 +36,23 @@ ViewData["Title"] = "Study Tracker";
     const end = document.getElementById('end').value;
     const resultDiv = document.getElementById('result');
     const audioPlayer = document.getElementById('audioPlayer');
+    const progressBar = document.getElementById('progressBar');
 
     if (!start || !end) {
-      resultDiv.innerText = "Please enter both start and end times.";
+      resultDiv.innerText = "⚠️ Please enter both start and end times.";
       return;
     }
 
-    // Calculate hours
     const startTime = new Date(`1970-01-01T${start}:00`);
     const endTime = new Date(`1970-01-01T${end}:00`);
     let hours = (endTime - startTime) / (1000 * 60 * 60);
-    if (hours < 0) hours += 24; // handle times crossing midnight
-    resultDiv.innerText = `You studied for ${hours.toFixed(2)} hours.`;
+    if (hours < 0) hours += 24;
 
-    // Send study log to backend
+    resultDiv.innerText = `✅ You studied for ${hours.toFixed(2)} hours.`;
+
+    let progress = Math.min((hours / 8) * 100, 100);
+    progressBar.style.width = progress + "%";
+
     const logResponse = await fetch("https://localhost:7078/api/studylogs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -79,25 +60,23 @@ ViewData["Title"] = "Study Tracker";
     });
 
     if (!logResponse.ok) {
-      resultDiv.innerText = "Error saving study log.";
+      resultDiv.innerText = "❌ Error saving study log.";
       return;
     }
 
-    // Determine category
     let category;
     if (hours < 2) category = "Little";
     else if (hours <= 5) category = "Good";
     else category = "Exceptional";
 
-    // Fetch random audio message from backend
     const audioResponse = await fetch(`https://localhost:7078/api/audiomessages/random/${category}`);
     if (!audioResponse.ok) {
-      resultDiv.innerText += " (but no audio available)";
+      resultDiv.innerText += " (no audio available 🎵)";
       return;
     }
 
     const audio = await audioResponse.json();
-    audioPlayer.src = audio.filePath; // must be a valid URL
+    audioPlayer.src = audio.filePath;
     audioPlayer.play();
   }
 </script>

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyTracker.Interfaces;
-using StudyTracker.Models;
+using StudyTracker.Models.EFModels;
 
 namespace StudyTracker.Controllers;
 

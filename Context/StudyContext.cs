@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StudyTracker.Models;
+using StudyTracker.Models.EFModels;
 
 namespace StudyTracker.Context;
 
