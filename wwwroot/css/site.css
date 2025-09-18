@@ -1,6 +1,7 @@
+/* Full-page background */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(120deg, #89f7fe, #66a6ff);
   color: #fff;
   display: flex;
   justify-content: center;
@@ -9,99 +10,119 @@ body {
   margin: 0;
 }
 
+/* Card styling */
 .card {
-  backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.15);
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-  width: 380px;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3rem 2.5rem;
+  border-radius: 1.8rem;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  width: 420px;
   text-align: center;
   animation: fadeIn 1s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Headings */
 h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 0.5rem;
+  color: #fff;
 }
 
 p.subtitle {
-  font-size: 0.95rem;
-  color: #e0e0e0;
-  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 2rem;
 }
 
+/* Labels and inputs */
 label {
   display: block;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   font-size: 1rem;
   text-align: left;
+  color: #fff;
 }
 
 input {
-  margin-top: 0.5rem;
-  padding: 0.6rem;
+  margin-top: 0.6rem;
+  padding: 0.8rem;
   width: 100%;
-  border-radius: 0.7rem;
+  border-radius: 0.8rem;
   border: none;
   outline: none;
   font-size: 1rem;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 input:focus {
   background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
 }
 
+/* Button */
 button {
-  margin-top: 1.5rem;
-  padding: 0.9rem;
+  margin-top: 2rem;
+  padding: 1rem;
   width: 100%;
   border: none;
-  border-radius: 0.7rem;
-  font-size: 1.05rem;
+  border-radius: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  background: linear-gradient(135deg, #ff7eb3, #ff5277);
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
   color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
+/* Result text */
 .result {
-  margin-top: 1.5rem;
+  margin-top: 1.8rem;
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
+  color: #fff;
 }
 
+/* Progress bar */
 .progress-container {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   background: rgba(255,255,255,0.2);
   border-radius: 1rem;
   overflow: hidden;
-  height: 12px;
+  height: 14px;
 }
 
 .progress-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(to right, #43e97b, #38f9d7);
+  background: linear-gradient(to right, #4facfe, #00f2fe);
   transition: width 0.8s ease;
 }
 
+/* Audio player */
 audio {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   width: 100%;
-  border-radius: 0.7rem;
+  border-radius: 0.8rem;
+  background: rgba(255,255,255,0.15);
+}
+
+header, footer {
+  display: none !important;
 }

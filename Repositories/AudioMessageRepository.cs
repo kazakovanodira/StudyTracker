@@ -16,6 +16,11 @@ public class AudioMessageRepository : IAudioMessageRepository
         await _context.SaveChangesAsync();
         return audioMsg;
     }
+    
+    public async Task<AudioMessage?> GetByMessageFilePath(string filePath)
+    {
+        return await _context.AudioMessages.FirstOrDefaultAsync(m => m.FilePath == filePath);
+    }
 
     public async Task<ICollection<AudioMessage>> GetByCategory(Category category)
     {
@@ -24,4 +29,16 @@ public class AudioMessageRepository : IAudioMessageRepository
             .Where(m => m.Category == category)
             .ToListAsync();
     }
+    
+    public async Task<AudioMessage?> UpdateFilePathAsync(int audioMessageId, string newFilePath)
+    {
+        var audioMsg = await _context.AudioMessages.FindAsync(audioMessageId);
+        if (audioMsg == null) return null;
+
+        audioMsg.FilePath = newFilePath;
+        await _context.SaveChangesAsync();
+
+        return audioMsg;
+    }
+
 }

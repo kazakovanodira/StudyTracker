@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyTracker.Interfaces;
+using StudyTracker.Models;
 using StudyTracker.Models.EFModels;
 
 namespace StudyTracker.Controllers;
@@ -14,14 +15,21 @@ public class AudioMessagesController : ControllerBase
     public AudioMessagesController(IAudioMessageRepository repo) => _repo = repo;
 
     [HttpPost]
-    public async Task<IActionResult> AddMessage([FromBody] AudioMessage message)
+    public async Task<IActionResult> AddMessage([FromBody] AudioMessage audioMessage)
     {
-        if (string.IsNullOrWhiteSpace(message.FilePath))
+        if (string.IsNullOrWhiteSpace(audioMessage.FilePath))
+        {
             return BadRequest("File path is required");
+        }
+        
+        var messageExists = await _repo.GetByMessageFilePath(audioMessage.FilePath);
 
-        message.AudioMessageId = Guid.NewGuid();
+        if (messageExists != null)
+        {
+            return BadRequest("This audioMessage already exists in the database.");
+        }
 
-        var created = await _repo.AddAsync(message);
+        var created = await _repo.AddAsync(audioMessage);
         return CreatedAtAction(nameof(GetByCategory), new { category = created.Category }, created);
     }
 
@@ -38,10 +46,28 @@ public class AudioMessagesController : ControllerBase
     {
         var messages = await _repo.GetByCategory(category);
 
-        if (messages == null || messages.Count == 0)
+        if (messages.Count == 0)
             return NotFound($"No audio messages found for category {category}");
 
         var randomMessage = messages.ElementAt(_random.Next(messages.Count));
         return Ok(randomMessage);
+    }
+    
+    [HttpPut("{id}/filepath")]
+    public async Task<IActionResult> UpdateFilePath(int id, [FromBody] UpdateFilePathDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.FilePath))
+        {
+            return BadRequest("File path is required.");
+        }
+
+        var updated = await _repo.UpdateFilePathAsync(id, dto.FilePath);
+
+        if (updated == null)
+        {
+            return NotFound($"AudioMessage with ID {id} not found.");
+        }
+
+        return Ok(updated);
     }
 }

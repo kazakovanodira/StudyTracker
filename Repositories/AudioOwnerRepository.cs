@@ -17,6 +17,11 @@ public class AudioOwnerRepository : IAudioOwnerRepository
         return owner;
     }
 
+    public async Task<AudioOwner?> GetByOwnerName(string name)
+    {
+        return await _context.AudioOwners.FirstOrDefaultAsync(o => o.OwnerName == name);
+    }
+
     public async Task<ICollection<AudioOwner>> GetAllAsync()
     {
         return await _context.AudioOwners

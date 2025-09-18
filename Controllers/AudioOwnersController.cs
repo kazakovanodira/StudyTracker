@@ -16,10 +16,17 @@ public class AudioOwnersController : ControllerBase
     public async Task<IActionResult> AddOwner([FromBody] AudioOwner owner)
     {
         if (string.IsNullOrWhiteSpace(owner.OwnerName))
+        {
             return BadRequest("Owner name is required");
+        }
+        
+        var ownerExists = await _repo.GetByOwnerName(owner.OwnerName);
 
-        owner.AudioOwnerId = Guid.NewGuid();
-
+        if (ownerExists != null)
+        {
+            return BadRequest("This owner already exists.");
+        }
+        
         var created = await _repo.AddAsync(owner);
         return CreatedAtAction(nameof(GetAll), new { id = created.AudioOwnerId }, created);
     }

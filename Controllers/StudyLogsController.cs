@@ -15,8 +15,11 @@ public class StudyLogsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddStudyLog([FromBody] StudyLog log)
     {
-        if (log == null) return BadRequest("Invalid study log");
-
+        if (log == null)
+        {
+            return BadRequest("Invalid study log");
+        }
+        
         log.Id = Guid.NewGuid();
         log.Date = log.Date == default ? DateTime.UtcNow : log.Date;
 

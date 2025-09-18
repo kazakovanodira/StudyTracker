@@ -56,7 +56,7 @@ ViewData["Title"] = "Study Tracker";
     const logResponse = await fetch("https://localhost:7078/api/studylogs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date: new Date(), hours })
+      body: JSON.stringify({ date: new Date(), startTime, endTime, hours })
     });
 
     if (!logResponse.ok) {
@@ -76,7 +76,8 @@ ViewData["Title"] = "Study Tracker";
     }
 
     const audio = await audioResponse.json();
-    audioPlayer.src = audio.filePath;
+    audioPlayer.src = `https://localhost:7078${audio.filePath}`;
+    audioPlayer.load();
     audioPlayer.play();
   }
 </script>
