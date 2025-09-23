@@ -5,115 +5,108 @@ ViewData["Title"] = "Study Tracker";
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@ViewData["Title"]</title>
-  <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
 <div class="card">
-  <h1>📚 Study Tracker</h1>
-  <p class="subtitle">Track your study sessions & stay motivated!</p>
+    <h1>📚 Study Tracker</h1>
+    <div class="pulse-line"></div>
+    <p class="subtitle">Stay motivated & keep your learning pulse strong 💙</p>
 
-  <label for="start">Start Time</label>
-  <input type="time" id="start">
+    <label for="start">Start Time</label>
+    <input type="time" id="start">
 
-  <label for="end">End Time</label>
-  <input type="time" id="end">
+    <label for="end">End Time</label>
+    <input type="time" id="end">
 
-  <button onclick="submitStudy()">Submit</button>
+    <button onclick="submitStudy()">Log Study Session</button>
 
-  <div class="result" id="result"></div>
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-  <audio id="audioPlayer" controls></audio>
+    <div class="result" id="result"></div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <audio id="audioPlayer" controls></audio>
 </div>
 
 <script>
-async function submitStudy() {
-    const start = document.getElementByStudyLogId('start').value;
-    const end = document.getElementByStudyLogId('end').value;
-    const resultDiv = document.getElementByStudyLogId('result');
-    const audioPlayer = document.getElementByStudyLogId('audioPlayer');
-    const progressBar = document.getElementByStudyLogId('progressBar');
+    async function submitStudy() {
+        const start = document.getElementById('start').value;
+        const end = document.getElementById('end').value;
+        const resultDiv = document.getElementById('result');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const progressBar = document.getElementById('progressBar');
 
-    // Clear previous messages
-    resultDiv.innerText = "";
+        resultDiv.innerText = "";
 
-    // Validate input
-    if (!start || !end) {
-        resultDiv.innerText = "⚠️ Please enter both start and end times.";
-        return;
-    }
+        if (!start || !end) {
+            resultDiv.innerText = "⚠️ Please enter both start and end times.";
+            return;
+        }
 
-    // Calculate hours
-    const startTime = new Date(`1970-01-01T${start}:00`);
-    const endTime = new Date(`1970-01-01T${end}:00`);
-    let hours = (endTime - startTime) / (1000 * 60 * 60);
-    if (hours < 0) hours += 24;
+        const startTime = new Date(`1970-01-01T${start}:00`);
+        const endTime = new Date(`1970-01-01T${end}:00`);
+        let hours = (endTime - startTime) / (1000 * 60 * 60);
+        if (hours < 0) hours += 24;
 
-    resultDiv.innerText = `✅ You studied for ${hours.toFixed(2)} hours.`;
+        resultDiv.innerText = `✅ You studied for ${hours.toFixed(2)} hours.`;
 
-    // Update progress bar
-    let progress = Math.min((hours / 8) * 100, 100);
-    progressBar.style.width = progress + "%";
+        let progress = Math.min((hours / 8) * 100, 100);
+        progressBar.style.width = progress + "%";
 
-    // Send study log to API
-    try {
-        const logResponse = await fetch("https://localhost:7078/api/studylogs", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                Date: new Date().toISOString(),
-                
-                hours: hours
-            })
-        });
+        try {
+            const logResponse = await fetch("http://localhost:5078/api/studylogs", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Date: new Date().toISOString(),
+                    StartTime: startTime,
+                    EndTime: endTime,
+                    Hours: hours
+                })
+            });
 
-        if (!logResponse.ok) {
-            const errorText = await logResponse.text();
-            console.error("Study log API error:", errorText);
+            if (!logResponse.ok) {
+                const errorText = await logResponse.text();
+                console.error("Study log API error:", errorText);
+                resultDiv.innerText += " ❌ Error saving study log.";
+                return;
+            }
+        } catch (err) {
+            console.error("Fetch error:", err);
             resultDiv.innerText += " ❌ Error saving study log.";
             return;
         }
-    } catch (err) {
-        console.error("Fetch error:", err);
-        resultDiv.innerText += " ❌ Error saving study log.";
-        return;
-    }
 
-    // Determine audio category
-    let category;
-    if (hours < 2) category = 0;
-    else if (hours <= 5) category = 1;
-    else category = 2;
+        let category;
+        if (hours < 2) category = 0;
+        else if (hours <= 5) category = 1;
+        else category = 2;
 
-    // Fetch random audio
-    try {
-        const audioResponse = await fetch(`https://localhost:7078/api/audiomessages/random/${category}`);
-        if (!audioResponse.ok) {
-            resultDiv.innerText += " (no audio available 🎵)";
-            return;
+        try {
+            const audioResponse = await fetch(`http://localhost:5078/api/audiomessages/random/${category}`);
+            if (!audioResponse.ok) {
+                resultDiv.innerText += " (no audio available 🎵)";
+                return;
+            }
+
+            const audio = await audioResponse.json();
+            console.log("Audio fetched:", audio);
+
+            audioPlayer.src = `http://localhost:5078${audio.filePath}`;
+            audioPlayer.load();
+
+            const playPromise = audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => console.log("Audio play error:", err));
+            }
+        } catch (err) {
+            console.error("Audio fetch/play error:", err);
+            resultDiv.innerText += " (error playing audio 🎵)";
         }
-
-        const audio = await audioResponse.json();
-        console.log("Audio fetched:", audio);
-
-        // Set audio source (use relative path from API)
-        audioPlayer.src = audio.filePath; 
-        audioPlayer.load();
-
-        // Play audio
-        const playPromise = audioPlayer.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(err => console.log("Audio play error:", err));
-        }
-    } catch (err) {
-        console.error("Audio fetch/play error:", err);
-        resultDiv.innerText += " (error playing audio 🎵)";
     }
-}
 </script>
 </body>
 </html>
