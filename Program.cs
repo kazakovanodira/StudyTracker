@@ -19,6 +19,8 @@ builder.Services.AddDbContext<StudyContext>(options =>
         new MySqlServerVersion(new Version(8, 0, 29))));
 
 builder.Services.AddEndpointsApiExplorer();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000"; // Render default
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}"); // bind to 0.0.0.0 and the PORT env var
 
 var app = builder.Build();
 
