@@ -22,7 +22,7 @@ public class StudyLogRepository : IStudyLogRepository
         return await _context.StudyLogs.ToListAsync();
     }
 
-    public async Task<StudyLog> GetById(Guid id)
+    public async Task<StudyLog?> GetById(Guid id)
     {
         return await _context.StudyLogs.FindAsync(id);
     }

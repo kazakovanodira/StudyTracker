@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
-
 namespace StudyTracker.Models.EFModels;
 
 public class StudyLog
